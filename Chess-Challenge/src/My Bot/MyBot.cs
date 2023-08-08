@@ -68,7 +68,21 @@ public class MyBot : IChessBot
        foreach (Move move in moves)
         {
             int moveScoreGuess = 0;
-            int movePieceType=Piece.PieceType (Board.Square)
+            int movePieceType = Piece.PieceType(Board.Square[move.StartSquare]);
+            int capturePieceType = Piece.PieceType(Board.Square[move.TargetSquare ]);
+             if (capturePieceType != Piece.None)
+                {
+                moveScoreGuess = 10 * GetPieceValue(capturePieceType) - GetPieceValue(movePieceType);
+             }
+
+             if (move.Flag == MoveFlags.Promotion)
+            {
+                moveScoreGuess = += GetPieceValue(move.PromotionPieceType);
+            }
+             if(Board.OpponentPawnAttackMap.ContainsSquare(move.TargetSquare))
+            {
+                moveScoreGuess -= GetPieceValue(movePieceType);
+            }
         }
     }
 }
